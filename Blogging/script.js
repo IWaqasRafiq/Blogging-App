@@ -1,61 +1,61 @@
 const firebaseApp = firebase.initializeApp(
-    {
-        apiKey: "AIzaSyA090Hch3XP48rv34LqV0KYCY5mcCFUAO0",
-        authDomain: "blogging-app-web.firebaseapp.com",
-        projectId: "blogging-app-web",
-        storageBucket: "blogging-app-web.appspot.com",
-        messagingSenderId: "186623517250",
-        appId: "1:186623517250:web:2a31e1ad5773fc456c43db",
-        measurementId: "G-4NNYBWV6Z1"
-    });
-  const db = firebaseApp.firestore();
-  const database = firebaseApp.database();
-  
-  let body = document.getElementsByTagName('body')[0];
-  let main = document.getElementsByTagName('main')[0];
-  let postW = document.getElementsByClassName('pop-up')[0];
-  let caption = document.getElementById('caption');
-  let postBtn = document.getElementsByClassName('post')[0];
-  
-  
-  function post(e) {
-    e.classList.toggle('pop-show');
-    main.classList.toggle('main-block');
-  }
-  
-  caption.addEventListener('keyup', function () {
-    if (caption.value) {
-      postBtn.classList.add('post-valued');
-    } else {
-      postBtn.classList.remove('post-valued');
-    }
+  {
+    apiKey: "AIzaSyA090Hch3XP48rv34LqV0KYCY5mcCFUAO0",
+    authDomain: "blogging-app-web.firebaseapp.com",
+    projectId: "blogging-app-web",
+    storageBucket: "blogging-app-web.appspot.com",
+    messagingSenderId: "186623517250",
+    appId: "1:186623517250:web:2a31e1ad5773fc456c43db",
+    measurementId: "G-4NNYBWV6Z1"
   });
-  
-  
-  function linky(text) {
-    var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-    return text.replace(urlRegex, function (url, b, c) {
-      var url2 = (c == 'www.') ? 'http://' + url : url;
-      return '<a href="' + url2 + '" target="_blank">' + url + '</a>';
-    })
-  }
-  
-  let pstForm = document.getElementById('post-form');
-  function posted() {
-    let text = linky(caption.value);
-    let username = document.getElementById('post-user').value;
-  
-    if (!username) {
-      useDefaultUsername();
-    }
-  
-    document.getElementsByClassName(".usernameD").innerHTML = username;
-  
-    pstForm.reset();
+const db = firebaseApp.firestore();
+const database = firebaseApp.database();
+
+let body = document.getElementsByTagName('body')[0];
+let main = document.getElementsByTagName('main')[0];
+let postW = document.getElementsByClassName('pop-up')[0];
+let caption = document.getElementById('caption');
+let postBtn = document.getElementsByClassName('post')[0];
+
+
+function post(e) {
+  e.classList.toggle('pop-show');
+  main.classList.toggle('main-block');
+}
+
+caption.addEventListener('keyup', function () {
+  if (caption.value) {
+    postBtn.classList.add('post-valued');
+  } else {
     postBtn.classList.remove('post-valued');
-  
-  
-    let postContainer = '\
+  }
+});
+
+
+function linky(text) {
+  var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+  return text.replace(urlRegex, function (url, b, c) {
+    var url2 = (c == 'www.') ? 'http://' + url : url;
+    return '<a href="' + url2 + '" target="_blank">' + url + '</a>';
+  })
+}
+
+let pstForm = document.getElementById('post-form');
+function posted() {
+  let text = linky(caption.value);
+  let username = document.getElementById('post-user').value;
+
+  if (!username) {
+    useDefaultUsername();
+  }
+
+  document.getElementsByClassName(".usernameD").innerHTML = username;
+
+  pstForm.reset();
+  postBtn.classList.remove('post-valued');
+
+
+  let postContainer = '\
   <div class="post-container">\
   <div class="post-header">\
       <img class="post-profile-img" src="../Img/person-circle.png" alt="user">\
@@ -63,7 +63,6 @@ const firebaseApp = firebase.initializeApp(
           <div class="post-title flex"><span class="usernameD verified">' + username + '</span><p class="hideText"> added a post on</p> <div\
                   class="time">' + time + '</div>\
           </div>\
-          <div class="profile-name">@user</div>\
       </div>\
   </div>\
   <div class="post-body">\
@@ -96,48 +95,54 @@ const firebaseApp = firebase.initializeApp(
         <title>Share</title>  \
   </svg>\
   </div>\
+  <div class="buttons">\
+  <button class="edit-button">Edit</button>\
+  <button class="delete-button">Delete</button>\
+  </div>\
   </div>\
   </div>\
   '
-  
-    let threadData = {
-      user: username,
-      post: text,
-    };
-  
-    let newThreadRef = database.ref("threads").push();
-    let ThreadId = newThreadRef.key;
-    newThreadRef.set(threadData);
-    console.log(threadData);
-  
-    document.getElementsByClassName('mid-col')[0].innerHTML += postContainer;
-  }
-  
-  let current = new Date();
-  let options = { hour: 'numeric', minute: 'numeric', hour12: true };
-  let time = current.toLocaleTimeString(undefined, options);
-  console.log(time);
-  document.getElementsByClassName('time')[0].innerHTML = time;
-  
-  function displayPostedData() {
-    database.ref("threads").once("value")
-      .then(snapshot => {
-        snapshot.forEach(childSnapshot => {
-          const threadData = childSnapshot.val();
-         
-          const postContainer = createPostContainer(threadData.user, threadData.post, time);
-  
-          document.getElementsByClassName('mid-col')[0].appendChild(postContainer);
-        });
-      })
-      .catch(error => {
-        console.log("Error retrieving posted data:", error);
+
+  let threadData = {
+    user: username,
+    post: text,
+  };
+
+  let newThreadRef = database.ref("threads").push();
+  let ThreadId = newThreadRef.key;
+  newThreadRef.set(threadData);
+  console.log(threadData);
+
+  document.getElementsByClassName('mid-col')[0].innerHTML += postContainer;
+}
+
+let current = new Date();
+let options = { hour: 'numeric', minute: 'numeric', hour12: true };
+let time = current.toLocaleTimeString(undefined, options);
+console.log(time);
+document.getElementsByClassName('time')[0].innerHTML = time;
+
+function displayPostedData() {
+  database.ref("threads").once("value")
+    .then(snapshot => {
+      snapshot.forEach(childSnapshot => {
+        const threadData = childSnapshot.val();
+        const threadId = childSnapshot.key;
+
+        const postContainer = createPostContainer(threadData.user, threadData.post, time, threadId);
+
+        document.getElementsByClassName('mid-col')[0].appendChild(postContainer);
       });
-  }
-  
-  function createPostContainer(username, text, time) {
-    const postContainer = document.createElement('div');
-    postContainer.innerHTML = `\
+    })
+    .catch(error => {
+      console.log("Error retrieving posted data:", error);
+    });
+}
+
+function createPostContainer(username, text, time, threadId) {
+  const postContainer = document.createElement('div');
+  postContainer.innerHTML = `\
+  <div class="post-container" data-thread-id="${threadId}">\
     <div class="post-container">\
     <div class="post-header">\
         <img class="post-profile-img" src="../Img/person-circle.png" alt="user">\
@@ -145,7 +150,6 @@ const firebaseApp = firebase.initializeApp(
             <div class="post-title flex"><span class="usernameD verified">${username}</span> added a post on <div\
                     class="time">${time}</div>\
             </div>\
-            <div class="profile-name">@user</div>\
         </div>\
     </div>\
     <div class="post-body">\
@@ -178,50 +182,109 @@ const firebaseApp = firebase.initializeApp(
           <title>Share</title>  \
     </svg>\
     </div>\
+    <div class="buttons">\
+    <button class="edit-button">Edit</button>\
+    <button class="delete-button" data-thread-id="${threadId}">Delete</button>\
+    </div>\
     </div>\
     </div>\
     `;
-    
-    return postContainer;
-  }
-  
-  document.getElementById('post-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-  
-  
-    database.ref("threads").push(threadData)
+
+    postContainer.querySelector('.delete-button').addEventListener('click', function () {
+      const threadId = this.getAttribute('data-thread-id');
+      deletePost(threadId);
+    });  
+
+  return postContainer;
+}
+
+// Delete Post
+function deletePost(threadId) {
+  const postContainer = document.querySelector(`[data-thread-id="${threadId}"]`);
+  if (postContainer) {
+    // Remove the post container from the DOM
+    postContainer.remove();
+
+    // Delete the post data from Firebase using the threadId
+    database.ref("threads").child(threadId).remove()
       .then(() => {
-        document.getElementsByClassName('mid-col')[0].innerHTML = '';
-  
-        displayPostedData();
-  
-        document.getElementById('post-form').reset();
+        console.log("Post deleted successfully");
       })
       .catch(error => {
-        console.log("Error saving posted data:", error);
+        console.log("Error deleting post:", error);
       });
+  }}
+
+document.getElementById('post-form').addEventListener('submit', function (event) {
+  event.preventDefault();
+
+
+  database.ref("threads").push(threadData)
+    .then(() => {
+      document.getElementsByClassName('mid-col')[0].innerHTML = '';
+
+      displayPostedData();
+
+      document.getElementById('post-form').reset();
+    })
+    .catch(error => {
+      console.log("Error saving posted data:", error);
     });
-  
-  displayPostedData();
-  
-      // Check the current state of the media query on page load
-      const mediaQuery = window.matchMedia('(max-width: 768px)');
-      handleMediaQuery(mediaQuery);
-  
-      // Add an event listener to track changes in the media query state
-      mediaQuery.addListener(handleMediaQuery);
-  
-      // Function to handle media query changes
-      function handleMediaQuery(mediaQuery) {
-        if (mediaQuery.matches) {
-          console.log('Media query matched! Screen width is 600px or less.');
-          // Perform actions specific to small screens
-          const element = document.querySelector(".main")
-          element.classList.remove("grid");
-        } else {
-          console.log('Media query not matched! Screen width is larger than 600px.');
-          // Perform actions specific to larger screens
-          const element = document.querySelector(".main")
-          element.classList.add("grid");
-        }
+});
+
+displayPostedData();
+
+document.querySelector('.edit-button').addEventListener('click', function () {
+  const threadId = this.getAttribute('data-thread-id');
+  deletePost(threadId);
+}); 
+let postContainer; // Define postContainer in a broader scope
+
+// Event listener for edit buttons
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('edit-button')) {
+    const postContainer = event.target.closest('.post-container');
+    if (!postContainer) {
+      return;
+    }
+
+    const usernameElement = postContainer.querySelector('.usernameD');
+    const captionElement = postContainer.querySelector('.caption-text');
+    const postId = postContainer.getAttribute('data-thread-id');
+    if (!usernameElement || !captionElement) {
+      return;
+    }
+
+    const editPopup = document.getElementById('edit-popup');
+    const editUsernameInput = editPopup.querySelector('#edit-username');
+    const editCaptionInput = editPopup.querySelector('#edit-caption');
+
+    editUsernameInput.value = usernameElement.textContent;
+    editCaptionInput.value = captionElement.textContent;
+
+    editPopup.style.display = 'block';
+
+    // Event listener for save edit button
+    document.getElementById('save-edit-button').addEventListener('click', function () {
+      if (usernameElement && captionElement) {
+        usernameElement.textContent = editUsernameInput.value;
+        captionElement.textContent = editCaptionInput.value;
       }
+      editPopup.style.display = 'none';
+    });
+    
+  }
+});
+
+// Event listener for cancel edit button
+document.getElementById('cancel-edit-button').addEventListener('click', function () {
+  let editPopup = document.getElementById('edit-popup');
+  editPopup.style.display = 'none';
+});
+
+
+
+
+
+
+

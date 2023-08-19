@@ -615,10 +615,38 @@ a {
     }
     
   } 
-  /* @media (max-width: 400px) {
+/* Edit Button */
+.edit-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+    margin-right: 2px;
+  }
+  
+  .edit-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Delete Button */
+  .delete-button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b;
+  }
+  
+    
 
-    .post-container {
-        max-width: 40rem !important;
-
-    }
-} */
