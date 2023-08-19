@@ -1,13 +1,13 @@
 
 const firebaseApp = firebase.initializeApp(
   {
-    apiKey: "AIzaSyCzZTDuR5mwE-2Wq6D8-cK3lDnfpAkecbw",
-    authDomain: "real-time-polling-app.firebaseapp.com",
-    databaseURL: "https://real-time-polling-app-default-rtdb.firebaseio.com",
-    projectId: "real-time-polling-app",
-    storageBucket: "real-time-polling-app.appspot.com",
-    messagingSenderId: "151148454470",
-    appId: "1:151148454470:web:d1e8eaa2c32102e4f36047"
+    apiKey: "AIzaSyA090Hch3XP48rv34LqV0KYCY5mcCFUAO0",
+    authDomain: "blogging-app-web.firebaseapp.com",
+    projectId: "blogging-app-web",
+    storageBucket: "blogging-app-web.appspot.com",
+    messagingSenderId: "186623517250",
+    appId: "1:186623517250:web:2a31e1ad5773fc456c43db",
+    measurementId: "G-4NNYBWV6Z1"
   });
 
 // Initialize Firebase
@@ -30,7 +30,7 @@ firebase.auth().signInWithEmailAndPassword(email, password)
   .then(() => {
     // Signed in 
     // alert("Your successfully log In")
-    window.location.href = "./Polls App/index.html";
+    window.location.href = "./Blogging/index.html";
     // ...
   })
   .catch((error) => {
